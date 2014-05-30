@@ -91,8 +91,10 @@ public final class JedisTool {
         try {
             log.info("Loading cache properties... path=[{}]", cachePath);
             if (cachePath.startsWith(FILE_URL_PREFIX)) {
+                // load from file
                 is = new FileInputStream(new File(new URI(cachePath)));
             } else {
+                // load from resources stream
                 is = JedisTool.class.getClassLoader().getResourceAsStream(cachePath);
             }
             cacheProps.load(is);
@@ -100,7 +102,7 @@ public final class JedisTool {
             log.warn("Fail to load cache properties. cachePath=" + cachePath, e);
         } finally {
             if (is != null) {
-                try {is.close();} catch (Exception e) {}
+                try { is.close(); } catch (Exception ignored) { }
             }
         }
         return cacheProps;
